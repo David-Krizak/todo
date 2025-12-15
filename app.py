@@ -62,4 +62,4 @@ def uredi_spremi(index):
     return redirect("/")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
