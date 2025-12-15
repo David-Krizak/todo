@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do lista</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="m-0">To-Do lista</h1>
+        <span class="badge bg-secondary">Ukupno: {{ zadaci|length }}</span>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Dodaj zadatak</h5>
+            <form method="post" action="/dodaj">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input type="text" name="naziv" class="form-control" placeholder="Naziv zadatka">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" name="opis" class="form-control" placeholder="Opis (opcionalno)">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="prioritet" class="form-select">
+                            <option>Nizak</option>
+                            <option selected>Srednji</option>
+                            <option>Visok</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-grid">
+                        <button class="btn btn-primary">Dodaj</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="list-group">
+        {% for zadatak in zadaci %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="me-3 w-100">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if zadatak.zavrsen %}
+                                <span class="badge bg-success">Završeno</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">U tijeku</span>
+                            {% endif %}
+
+                            {% if zadatak.prioritet == "Visok" %}
+                                <span class="badge bg-danger">Visok prioritet</span>
+                            {% elif zadatak.prioritet == "Srednji" %}
+                                <span class="badge bg-primary">Srednji prioritet</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Nizak prioritet</span>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="mt-2 mb-1">
+                            {% if zadatak.zavrsen %}
+                                <s>{{ zadatak.naziv }}</s>
+                            {% else %}
+                                {{ zadatak.naziv }}
+                            {% endif %}
+                        </h5>
+
+                        {% if zadatak.opis %}
+                            <div class="text-muted">{{ zadatak.opis }}</div>
+                        {% else %}
+                            <div class="text-muted">Nema opisa</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        {% if not zadatak.zavrsen %}
+                            <a class="btn btn-success btn-sm" href="/zavrsi/{{ loop.index0 }}">Završi</a>
+                        {% else %}
+                            <a class="btn btn-outline-secondary btn-sm" href="/vrati/{{ loop.index0 }}">Vrati</a>
+                        {% endif %}
+
+                        <a class="btn btn-outline-primary btn-sm" href="/uredi/{{ loop.index0 }}">Uredi</a>
+                        <a class="btn btn-outline-danger btn-sm" href="/obrisi/{{ loop.index0 }}">Obriši</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if zadaci|length == 0 %}
+        <div class="alert alert-info mt-3">Nema zadataka. Dodaj prvi zadatak gore.</div>
+    {% endif %}
+
+</div>
+</body>
+</html>

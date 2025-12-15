@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Uredi zadatak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="m-0">Uredi zadatak</h1>
+        <a class="btn btn-outline-secondary" href="/">Natrag</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="/uredi/{{ index }}">
+                <div class="mb-3">
+                    <label class="form-label">Naziv</label>
+                    <input type="text" name="naziv" class="form-control" value="{{ zadatak.naziv }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Opis</label>
+                    <input type="text" name="opis" class="form-control" value="{{ zadatak.opis }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Prioritet</label>
+                    <select name="prioritet" class="form-select">
+                        <option {% if zadatak.prioritet == "Nizak" %}selected{% endif %}>Nizak</option>
+                        <option {% if zadatak.prioritet == "Srednji" %}selected{% endif %}>Srednji</option>
+                        <option {% if zadatak.prioritet == "Visok" %}selected{% endif %}>Visok</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary">Spremi</button>
+                    <a class="btn btn-outline-secondary" href="/">Odustani</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
